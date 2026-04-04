@@ -282,20 +282,20 @@ function render(){
 /* ===== HEADER ===== */
 function rHdr(){
   var h='<header class="hdr"><div class="hdr-in">';
-  h+='<div class="logo" onclick="go('home')"><div class="logo-ic">🏪</div><div><h1>PetMark — سوق الحيوانات الأليفة</h1><span>منصة بيع وشراء الحيوانات الأليفة ومستلزماتها</span></div></div>';
+  h+='<div class="logo" onclick="go(`home`)"><div class="logo-ic">🏪</div><div><h1>PetMark — سوق الحيوانات الأليفة</h1><span>منصة بيع وشراء الحيوانات الأليفة ومستلزماتها</span></div></div>';
   h+='<div class="hdr-acts">';
   if(SA){
     h+='<span class="bdg bdg-warn">👑 سوبر أدمن</span>';
-    h+='<button class="btn btn-n btn-sm" onclick="go('admin')">⚙️ لوحة التحكم</button>';
-    h+='<button class="btn btn-n btn-sm" onclick="SA=null;go('home')">🚪 خروج</button>';
+    h+='<button class="btn btn-n btn-sm" onclick="go(`admin`)">⚙️ لوحة التحكم</button>';
+    h+='<button class="btn btn-n btn-sm" onclick="SA=null;go(`home`)">🚪 خروج</button>';
   } else if(V){
     h+='<span class="bdg bdg-info">🏪 '+V.name+'</span>';
-    h+='<button class="btn btn-n btn-sm" onclick="go('vendor')">📊 لوحتي</button>';
-    h+='<button class="btn btn-n btn-sm" onclick="V=null;go('home')">🚪 خروج</button>';
+    h+='<button class="btn btn-n btn-sm" onclick="go(`vendor`)">📊 لوحتي</button>';
+    h+='<button class="btn btn-n btn-sm" onclick="V=null;go(`home`)">🚪 خروج</button>';
   } else if(C){
     h+='<span class="bdg bdg-info">👤 '+C.name+'</span>';
-    h+='<button class="btn btn-n btn-sm" onclick="go('customer')">📦 طلباتي</button>';
-    h+='<button class="btn btn-n btn-sm" onclick="C=null;go('home')">🚪 خروج</button>';
+    h+='<button class="btn btn-n btn-sm" onclick="go(`customer`)">📦 طلباتي</button>';
+    h+='<button class="btn btn-n btn-sm" onclick="C=null;go(`home`)">🚪 خروج</button>';
   } else {
     h+='<button class="btn btn-n btn-sm" onclick="showLoginPopup()">🔑 تسجيل الدخول</button>';
     h+='<button class="btn btn-sm" style="background:var(--ac);color:#fff" onclick="showReg()">📝 سجل متجرك</button>';
@@ -363,7 +363,7 @@ function rPricing(){
         (k==='pro'||k==='unl'?'<li>إعلانات مميزة</li>':'')+
         (k==='unl'?'<li>دعم فني مخصص</li>':'')+
       '</ul>'+
-      '<button class="btn '+(p.price===0?'btn-ok':'btn-p')+' btn-lg" style="width:100%" onclick="startReg(''+k+'')">'+
+      '<button class="btn '+(p.price===0?'btn-ok':'btn-p')+' btn-lg" style="width:100%" onclick="startReg(`${k}`)">'+
         (p.price===0?'ابدأ مجاناً':'اشترك الآن')+
       '</button>'+
     '</div>';
@@ -384,7 +384,7 @@ function rFeatured(){
     h+='<div class="main"><div class="sec-h"><div><h2 class="sec-t">📢 إعلانات مميزة</h2></div></div>';
     h+='<div class="grid">'+topBids.map(function(a){
       var v=DB.vendors.find(function(x){return x.id===a.vid});
-      return '<div class="card" onclick="openStore(''+(v.slug||v.id)+'')" style="cursor:pointer;border-color:var(--ac)">'+
+      return '<div class="card" onclick="openStore(`${(v.slug||v.id)}`)" style="cursor:pointer;border-color:var(--ac)">'+
         '<div style="background:linear-gradient(135deg,#DAA520,#8B4513);padding:16px;text-align:center;color:#fff">'+
           '<div style="font-size:10px;opacity:.8">📢 إعلان ممول</div>'+
           '<h3 style="font-size:16px;margin-top:4px">'+a.adTitle+'</h3>'+
@@ -404,7 +404,7 @@ function rFeatured(){
   h+='<div class="main"><div class="sec-h"><div><h2 class="sec-t">🏪 البائعين المسجلين</h2><p class="sec-s">تصفح متاجر البائعين على المنصة</p></div></div>'+
     '<div class="grid">'+active.map(function(v){
       var vp=DB.products.filter(function(p){return p.vid===v.id});
-      return '<div class="card" onclick="openStore(''+(v.slug||v.id)+'')" style="cursor:pointer">'+
+      return '<div class="card" onclick="openStore(`${(v.slug||v.id)}`)" style="cursor:pointer">'+
         '<div style="height:100px;background:linear-gradient(135deg,var(--pd),var(--pl));display:flex;align-items:center;justify-content:center;font-size:40px;color:#fff">'+v.icon+'</div>'+
         '<div class="card-body">'+
           '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">'+
@@ -421,19 +421,19 @@ function rFeatured(){
 
 /* ===== AUTH ===== */
 var regPlan='free';
-function showReg(plan){regPlan=plan||'free';cv='auth';render();}
-function startReg(plan){regPlan=plan||'free';cv='auth';render();}
+function showReg(plan){regPlan=plan||'free';cv=`auth`;render();}
+function startReg(plan){regPlan=plan||'free';cv=`auth`;render();}
 
-var authMode='login'; // login/register/admin
+var authMode=`login`; // login/register/admin
 
 function rAuth(){
   var h='<div class="main"><div class="auth-box">';
   h+='<div style="font-size:48px;margin-bottom:12px">🏪</div>';
   var tabs='<div class="tabs" style="margin-bottom:20px">'+
-    '<div class="tab'+(authMode==='login'?' on':'')+'" onclick="authMode='login';render()">دخول بائع</div>'+
-    '<div class="tab'+(authMode==='register'?' on':'')+'" onclick="authMode='register';render()">تسجيل متجر</div>'+
-    '<div class="tab'+(authMode==='forgot'?' on':'')+'" onclick="authMode='forgot';render()">نسيت كلمة المرور</div>'+
-    '<div class="tab'+(authMode==='admin'?' on':'')+'" onclick="authMode='admin';render()">سوبر أدمن</div>'+
+    '<div class="tab'+(authMode==='login'?' on':'')+'" onclick="authMode=`login`;render()">دخول بائع</div>'+
+    '<div class="tab'+(authMode==='register'?' on':'')+'" onclick="authMode=`register`;render()">تسجيل متجر</div>'+
+    '<div class="tab'+(authMode==='forgot'?' on':'')+'" onclick="authMode=`forgot`;render()">نسيت كلمة المرور</div>'+
+    '<div class="tab'+(authMode==='admin'?' on':'')+'" onclick="authMode=`admin`;render()">سوبر أدمن</div>'+
   '</div>';
   h+=tabs;
 
@@ -441,7 +441,7 @@ function rAuth(){
     h+='<h2>دخول البائع</h2>';
     h+='<p style="color:var(--txtl);margin-bottom:24px">ادخل بريدك وكلمة المرور</p>';
     h+='<div class="fg"><label>البريد الإلكتروني</label><input type="email" id="vE" placeholder="vendor@email.com"></div>';
-    h+='<div class="fg"><label>كلمة المرور</label><div class="pw-wrap"><input type="password" id="vP" placeholder="••••••••"><button class="pw-eye" onclick="togPw('vP',this)">👁️</button></div></div>';
+    h+='<div class="fg"><label>كلمة المرور</label><div class="pw-wrap"><input type="password" id="vP" placeholder="••••••••"><button class="pw-eye" onclick="togPw(`vP`,this)">👁️</button></div></div>';
     h+='<button class="btn btn-p btn-lg" style="width:100%;margin-top:10px" onclick="vendorLogin()">🔑 تسجيل الدخول</button>';
   }
   else if(authMode==='register'){
@@ -451,7 +451,7 @@ function rAuth(){
     h+='<div class="fg"><label>اسم المتجر في الرابط (بالإنجليزي)</label><input type="text" id="rSlug" placeholder="al-falani" style="direction:ltr;text-align:right" oninput="updateSlugPreview()"><div class="store-slug-preview" id="slugPreview">مثال: attara.io/<code>al-falani</code></div></div>';
     h+='<div class="fg"><label>البريد الإلكتروني</label><input type="email" id="rE" placeholder="vendor@email.com"></div>';
     h+='<div class="fg"><label>رقم الموبايل</label><input type="tel" id="rPh" placeholder="01xxxxxxxxx"></div>';
-    h+='<div class="fg"><label>كلمة المرور</label><div class="pw-wrap"><input type="password" id="rPa" placeholder="••••••••"><button class="pw-eye" onclick="togPw('rPa',this)">👁️</button></div></div>';
+    h+='<div class="fg"><label>كلمة المرور</label><div class="pw-wrap"><input type="password" id="rPa" placeholder="••••••••"><button class="pw-eye" onclick="togPw(`rPa`,this)">👁️</button></div></div>';
     h+='<div class="fg"><label>وصف المتجر</label><textarea id="rD" rows="2" placeholder="وصف مختصر عن متجرك..."></textarea></div>';
     h+='<div class="fg"><label>أيقونة المتجر</label><input id="rI" placeholder="🏪" style="text-align:center;font-size:24px" maxlength="4"></div>';
     h+='<div class="fg"><label>الباقة</label><select id="rPlan">';
@@ -475,17 +475,17 @@ function rAuth(){
     h+='<button class="btn btn-p btn-lg" style="width:100%;margin-top:10px" onclick="verifyResetCode()">✅ تحقق من الكود</button>';
     h+='</div>';
     h+='<div id="forgotStep3" style="display:none">';
-    h+='<div class="fg"><label>كلمة المرور الجديدة</label><div class="pw-wrap"><input type="password" id="fNewP" placeholder="••••••••"><button class="pw-eye" onclick="togPw('fNewP',this)">👁️</button></div></div>';
-    h+='<div class="fg"><label>تأكيد كلمة المرور</label><div class="pw-wrap"><input type="password" id="fConfP" placeholder="••••••••"><button class="pw-eye" onclick="togPw('fConfP',this)">👁️</button></div></div>';
+    h+='<div class="fg"><label>كلمة المرور الجديدة</label><div class="pw-wrap"><input type="password" id="fNewP" placeholder="••••••••"><button class="pw-eye" onclick="togPw(`fNewP`,this)">👁️</button></div></div>';
+    h+='<div class="fg"><label>تأكيد كلمة المرور</label><div class="pw-wrap"><input type="password" id="fConfP" placeholder="••••••••"><button class="pw-eye" onclick="togPw(`fConfP`,this)">👁️</button></div></div>';
     h+='<button class="btn btn-ok btn-lg" style="width:100%;margin-top:10px" onclick="resetPassword()">💾 تغيير كلمة المرور</button>';
     h+='</div>';
-    h+='<p style="margin-top:20px;font-size:13px;color:var(--txtl)"><a href="#" onclick="authMode='login';render();return false" style="color:var(--p)">العودة لتسجيل الدخول</a></p>';
+    h+='<p style="margin-top:20px;font-size:13px;color:var(--txtl)"><a href="#" onclick="authMode=`login`;render();return false" style="color:var(--p)">العودة لتسجيل الدخول</a></p>';
   }
   else if(authMode==='admin'){
     h+='<h2>دخول السوبر أدمن</h2>';
     h+='<p style="color:var(--txtl);margin-bottom:24px">لوحة التحكم الشاملة</p>';
     h+='<div class="fg"><label>البريد الإلكتروني</label><input type="email" id="aE" placeholder="admin@attara.com"></div>';
-    h+='<div class="fg"><label>كلمة المرور</label><div class="pw-wrap"><input type="password" id="aP" placeholder="••••••••"><button class="pw-eye" onclick="togPw('aP',this)">👁️</button></div></div>';
+    h+='<div class="fg"><label>كلمة المرور</label><div class="pw-wrap"><input type="password" id="aP" placeholder="••••••••"><button class="pw-eye" onclick="togPw(`aP`,this)">👁️</button></div></div>';
     h+='<button class="btn btn-a btn-lg" style="width:100%;margin-top:10px" onclick="superAdminLogin()">👑 دخول السوبر أدمن</button>';
     h+='<p style="margin-top:16px;font-size:11px;color:var(--txtm)">🔑 ادخل بيانات السوبر أدمن للدخول</p>';
   }
@@ -499,7 +499,7 @@ function vendorLogin(){
   var v=DB.vendors.find(function(x){return x.email===e&&x.pass===p});
   if(!v)return toast('❌ بيانات الدخول غير صحيحة');
   if(!v.active)return toast('⏳ حسابك قيد المراجعة — انتظر تفعيله');
-  V=v;toast('✅ مرحباً '+v.name);go('vendor');
+  V=v;toast('✅ مرحباً '+v.name);go(`vendor`);
 }
 function vendorRegister(){
   var n=document.getElementById('rN').value.trim(),e=document.getElementById('rE').value.trim(),
@@ -525,12 +525,12 @@ function vendorRegister(){
   });
   if(planInfo.price===0)v.active=true;
   saveDb();
-  if(planInfo.price===0){V=v;toast('✅ تم إنشاء متجرك! مرحباً '+n);go('vendor')}
-  else{toast('✅ تم التسجيل! ادفع ثم ارسل سكرين شوت للتفعيل');cv='auth';authMode='login';render()}
+  if(planInfo.price===0){V=v;toast('✅ تم إنشاء متجرك! مرحباً '+n);go(`vendor`)}
+  else{toast('✅ تم التسجيل! ادفع ثم ارسل سكرين شوت للتفعيل');cv=`auth`;authMode=`login`;render()}
 }
 function superAdminLogin(){
   var e=document.getElementById('aE').value.trim(),p=document.getElementById('aP').value;
-  if(e===SUPER_ADMIN_EMAIL&&(p===DB.adminPass||p===SUPER_ADMIN_PASS)){SA={email:e};DB.adminPass=p;saveDb();toast('👑 مرحباً أيها السوبر أدمن');go('admin');return}
+  if(e===SUPER_ADMIN_EMAIL&&(p===DB.adminPass||p===SUPER_ADMIN_PASS)){SA={email:e};DB.adminPass=p;saveDb();toast('👑 مرحباً أيها السوبر أدمن');go(`admin`);return}
   toast('❌ بيانات الدخول غير صحيحة');
 }
 
@@ -562,13 +562,13 @@ function resetPassword(){
   if(!_resetVendor)return toast('❌ خطأ — حاول مرة أخرى');
   _resetVendor.pass=np;saveDb();
   _resetVendor=null;
-  authMode='login';render();
+  authMode=`login`;render();
   toast('✅ تم تغيير كلمة المرور — سجل دخولك الآن');
 }
 
 /* ===== VENDOR DASHBOARD ===== */
 function rVendorDash(){
-  if(!V)return go('home');
+  if(!V)return go(`home`);
   var vp=DB.products.filter(function(p){return p.vid===V.id});
   var vo=DB.orders.filter(function(o){return o.vid===V.id});
   var planInfo=PLANS[V.plan];
@@ -585,10 +585,10 @@ function rVendorDash(){
   }
   // Tabs
   h+='<div class="tabs">'+
-    '<div class="tab'+(vendorTab==='products'?' on':'')+'" onclick="vendorTab='products';render()">📦 المنتجات ('+vp.length+'/'+planInfo.products+')</div>'+
-    '<div class="tab'+(vendorTab==='orders'?' on':'')+'" onclick="vendorTab='orders';render()">🛒 الطلبات ('+vo.length+')</div>'+
-    '<div class="tab'+(vendorTab==='subscription'?' on':'')+'" onclick="vendorTab='subscription';render()">💎 الاشتراك</div>'+
-    '<div class="tab'+(vendorTab==='store'?' on':'')+'" onclick="vendorTab='store';render()">🔗 متجري</div>'+
+    '<div class="tab'+(vendorTab==='products'?' on':'')+'" onclick="vendorTab=`products`;render()">📦 المنتجات ('+vp.length+'/'+planInfo.products+')</div>'+
+    '<div class="tab'+(vendorTab==='orders'?' on':'')+'" onclick="vendorTab=`orders`;render()">🛒 الطلبات ('+vo.length+')</div>'+
+    '<div class="tab'+(vendorTab==='subscription'?' on':'')+'" onclick="vendorTab=`subscription`;render()">💎 الاشتراك</div>'+
+    '<div class="tab'+(vendorTab==='store'?' on':'')+'" onclick="vendorTab=`store`;render()">🔗 متجري</div>'+
   '</div>';
 
   if(vendorTab==='products') h+=rVProducts(vp,planInfo);
@@ -617,7 +617,7 @@ function rVProducts(vp,planInfo){
         '<p class="prod-desc">'+p.desc+'</p>'+
         '<div style="display:flex;justify-content:space-between;align-items:center">'+
           '<span class="stock-badge '+sc+'">'+st+'</span>'+
-          '<div><button class="btn btn-s btn-sm" onclick="editProd(''+p.id+'')">✏️</button> <button class="btn btn-d btn-sm" onclick="delProd(''+p.id+'')">🗑️</button></div>'+
+          '<div><button class="btn btn-s btn-sm" onclick="editProd(`${p.id}`)">✏️</button> <button class="btn btn-d btn-sm" onclick="delProd(`${p.id}`)">🗑️</button></div>'+
         '</div>'+
       '</div></div>';
   }).join('')+'</div>';
@@ -637,7 +637,7 @@ function addProd(){
     '<div class="fg"><label>الوصف</label><textarea id="pD" rows="2" placeholder="وصف المنتج"></textarea></div>'+
     '<div class="fg"><label>السعر (ج.م)</label><input id="pPr" type="number" placeholder="0"></div>'+
     '<div class="fg"><label>المخزون</label><input id="pSt" type="number" placeholder="0"></div>'+
-    '<div class="fg"><label>صورة</label><div class="up-area" onclick="document.getElementById('pIm').click()"><p>📷 اضغط لرفع صورة</p></div>'+
+    '<div class="fg"><label>صورة</label><div class="up-area" onclick="document.getElementById(`pIm`).click()"><p>📷 اضغط لرفع صورة</p></div>'+
     '<input type="file" id="pIm" accept="image/*" style="display:none" onchange="hPIm(this)"><div id="pImP" class="imgs"></div></div>',
     'saveProd(null)');
   setTimeout(function(){
@@ -659,22 +659,22 @@ function editProd(id){
     '<div class="fg"><label>الوصف</label><textarea id="pD" rows="2">'+p.desc+'</textarea></div>'+
     '<div class="fg"><label>السعر (ج.م)</label><input id="pPr" type="number" value="'+p.price+'"></div>'+
     '<div class="fg"><label>المخزون</label><input id="pSt" type="number" value="'+p.stock+'"></div>'+
-    '<div class="fg"><label>صورة</label><div class="up-area" onclick="document.getElementById('pIm').click()"><p>📷 اضغط لتغيير الصورة</p></div>'+
-    '<input type="file" id="pIm" accept="image/*" style="display:none" onchange="hPIm(this)"><div id="pImP" class="imgs">'+(p.img?'<div class="img-it"><img src="'+p.img+'"><button class="img-rm" onclick="window._pImg='';this.parentElement.remove()">✕</button></div>':'')+'</div></div>',
-    'saveProd(''+id+'')');
+    '<div class="fg"><label>صورة</label><div class="up-area" onclick="document.getElementById(`pIm`).click()"><p>📷 اضغط لتغيير الصورة</p></div>'+
+    '<input type="file" id="pIm" accept="image/*" style="display:none" onchange="hPIm(this)"><div id="pImP" class="imgs">'+(p.img?'<div class="img-it"><img src="'+p.img+'"><button class="img-rm" onclick="window._pImg=``;this.parentElement.remove()">✕</button></div>':'')+'</div></div>',
+    'saveProd(`${id}`)');
   setTimeout(function(){
     var sel=document.getElementById('pCh');
     var inp=document.getElementById('pChNew');
     if(sel&&inp) sel.onchange=function(){inp.style.display=sel.value==='__new__'?'block':'none'};
   },100);
 }
-window._pImg='';
+window._pImg=``;
 function hPIm(el){
   var f=el.files[0];if(!f)return;
   var r=new FileReader();r.onload=function(ev){
     cmpImg(ev.target.result,600,.7).then(function(c){
       window._pImg=c;
-      document.getElementById('pImP').innerHTML='<div class="img-it"><img src="'+c+'"><button class="img-rm" onclick="window._pImg='';this.parentElement.remove()">✕</button></div>';
+      document.getElementById('pImP').innerHTML='<div class="img-it"><img src="'+c+'"><button class="img-rm" onclick="window._pImg=``;this.parentElement.remove()">✕</button></div>';
     });
   };r.readAsDataURL(f);
 }
@@ -706,9 +706,9 @@ function saveProd(id){
     DB.products.push({id:'p_'+Date.now(),vid:V.id,name:n,desc:d,price:pr,stock:st,img:window._pImg||'',chapter:chapter});
     toast('✅ تم الإضافة');
   }
-  window._pImg='';saveDb();clMo();render();
+  window._pImg=``;saveDb();clMo();render();
 }
-function delProd(id){var p=DB.products.find(function(x){return x.id===id});sMo('⚠️ حذف','<p>هل تريد حذف "'+p.name+'"؟</p>','doDelProd(''+id+'')')}
+function delProd(id){var p=DB.products.find(function(x){return x.id===id});sMo('⚠️ حذف','<p>هل تريد حذف "'+p.name+'"؟</p>','doDelProd(`${id}`)')}
 function doDelProd(id){DB.products=DB.products.filter(function(p){return p.id!==id});saveDb();clMo();render();toast('🗑️ تم الحذف')}
 
 /* VENDOR: ORDERS */
@@ -739,7 +739,7 @@ function rVSub(planInfo,sub){
       DB.paymentNumbers.forEach(function(pm){
         h+='<div class="pay-box"><h4>'+(pm.type==='instapay'?'⚡ إنستاباي':'📱 فودافون كاش')+'</h4><div class="pay-num">'+pm.number+'</div><p style="font-size:12px;color:var(--txtl);text-align:center">'+pm.name+'</p></div>';
       });
-      h+='<div class="up-area" onclick="document.getElementById('sScr').click()" style="margin-top:12px"><p>📷 ارفق سكرين شوت الدفع</p></div>';
+      h+='<div class="up-area" onclick="document.getElementById(`sScr`).click()" style="margin-top:12px"><p>📷 ارفق سكرين شوت الدفع</p></div>';
       h+='<input type="file" id="sScr" accept="image/*" style="display:none" onchange="hSScr(this)">';
       h+='<div id="sScrP" class="imgs" style="margin-top:10px"></div>';
       h+='<button class="btn btn-p" style="width:100%;margin-top:12px" onclick="submitPayment()">📤 إرسال سكرين شوت</button>';
@@ -755,16 +755,16 @@ function hSScr(el){
   var r=new FileReader();r.onload=function(ev){
     cmpImg(ev.target.result,800,.7).then(function(c){
       window._sScr=c;
-      document.getElementById('sScrP').innerHTML='<div class="img-it"><img src="'+c+'"><button class="img-rm" onclick="window._sScr='';this.parentElement.remove()">✕</button></div>';
+      document.getElementById('sScrP').innerHTML='<div class="img-it"><img src="'+c+'"><button class="img-rm" onclick="window._sScr=``;this.parentElement.remove()">✕</button></div>';
     });
   };r.readAsDataURL(f);
 }
-window._sScr='';
+window._sScr=``;
 function submitPayment(){
   if(!window._sScr)return toast('⚠️ ارفق سكرين شوت أولاً');
   var sub=DB.subscriptions.filter(function(s){return s.vid===V.id}).pop();
   if(sub){sub.screenshot=window._sScr;sub.status='pending';}
-  window._sScr='';saveDb();toast('✅ تم إرسال السكرين شوت — بانتظار المراجعة');render();
+  window._sScr=``;saveDb();toast('✅ تم إرسال السكرين شوت — بانتظار المراجعة');render();
 }
 function showUpgrade(){
   var h='<h3 style="margin-bottom:16px">ترقية الباقة</h3>';
@@ -774,7 +774,7 @@ function showUpgrade(){
     h+='<div style="display:flex;justify-content:space-between;align-items:center;padding:12px;border:1px solid var(--brd);border-radius:8px;margin-bottom:8px">'+
       '<div>'+p.icon+' <strong>'+p.name+'</strong> — حتى '+p.products+' منتج</div>'+
       '<div><span style="text-decoration:line-through;color:var(--txtm);font-size:12px">'+p.price+'</span> <strong style="color:var(--p)">'+p.promo+' ج.م/شهر</strong></div>'+
-      '<button class="btn btn-p btn-sm" onclick="upgradeTo(''+k+'')">اختيار</button></div>';
+      '<button class="btn btn-p btn-sm" onclick="upgradeTo(`${k}`)">اختيار</button></div>';
   });
   sMo('⬆️ ترقية الباقة',h,'clMo()');
 }
@@ -801,17 +801,17 @@ function rVStore(){
       '<p style="color:var(--txtl);font-size:13px;margin-bottom:16px">وكيل داخل PetMark — سوق الحيوانات الأليفة</p>'+
       '<p style="margin-bottom:12px">شارك رابط متجرك مع عملائك:</p>'+
       '<div style="background:var(--bg);padding:12px;border-radius:8px;font-size:14px;word-break:break-all;direction:ltr">'+link+'</div>'+
-      '<button class="btn btn-p" style="margin-top:12px" onclick="copyText(''+link+'')">📋 نسخ الرابط</button>'+
-      '<br><button class="btn btn-s" style="margin-top:8px" onclick="openStore(''+slug+'')">👁️ معاينة المتج</button>'+
+      '<button class="btn btn-p" style="margin-top:12px" onclick="copyText(`${link}`)">📋 نسخ الرابط</button>'+
+      '<br><button class="btn btn-s" style="margin-top:8px" onclick="openStore(`${slug}`)">👁️ معاينة المتج</button>'+
     '</div>';
 }
 
 /* ===== PUBLIC STORE ===== */
 var storeViewId=null;
-var storeActiveChapter='all';
+var storeActiveChapter=`all`;
 function openStore(idOrSlug){
   var v=DB.vendors.find(function(x){return x.id===idOrSlug||x.slug===idOrSlug});
-  if(v){storeViewId=v.id;storeActiveChapter='all';cv='store';render();window.scrollTo(0,0)}
+  if(v){storeViewId=v.id;storeActiveChapter=`all`;cv=`store`;render();window.scrollTo(0,0)}
   else toast('❌ المتجر غير موجود');
 }
 function rPublicStore(){
@@ -821,15 +821,15 @@ function rPublicStore(){
   var chapters=[...new Set(vp.map(function(p){return p.chapter||'عام'}))];
   var filtered=storeActiveChapter==='all'?vp:vp.filter(function(p){return (p.chapter||'عام')===storeActiveChapter});
   var h='<div class="main">';
-  h+='<button class="back" onclick="go('home')">← العودة</button>';
+  h+='<button class="back" onclick="go(`home`)">← العودة</button>';
   h+='<div class="store-header"><div class="store-avatar">'+v.icon+'</div><div class="store-info"><h2>'+v.name+'</h2><p>'+(v.desc||'حيوانات أليفة ومستلزماتها')+'</p></div></div>';
   // Chapter tabs
   if(chapters.length>1){
     h+='<div class="tabs" style="margin-bottom:20px">';
-    h+='<div class="tab'+(storeActiveChapter==='all'?' on':'')+'" onclick="storeActiveChapter='all';render()">الكل ('+vp.length+')</div>';
+    h+='<div class="tab'+(storeActiveChapter==='all'?' on':'')+'" onclick="storeActiveChapter=`all`;render()">الكل ('+vp.length+')</div>';
     chapters.forEach(function(ch){
       var count=vp.filter(function(p){return(p.chapter||'عام')===ch}).length;
-      h+='<div class="tab'+(storeActiveChapter===ch?' on':'')+'" onclick="storeActiveChapter=''+ch+'';render()">'+ch+' ('+count+')</div>';
+      h+='<div class="tab'+(storeActiveChapter===ch?' on':'')+'" onclick="storeActiveChapter=`${ch}`;render()">'+ch+' ('+count+')</div>';
     });
     h+='</div>';
   }
@@ -844,7 +844,7 @@ function rPublicStore(){
         '<p class="prod-desc">'+p.desc+'</p>'+
         '<div style="display:flex;justify-content:space-between;align-items:center">'+
           '<span class="stock-badge '+sc+'">'+st+'</span>'+
-          (p.stock>0?'<button class="btn btn-p btn-sm" onclick="event.stopPropagation();showPlaceOrder(''+p.id+'')">🛒 اطلب</button>':'')+
+          (p.stock>0?'<button class="btn btn-p btn-sm" onclick="event.stopPropagation();showPlaceOrder(`${p.id}`)">🛒 اطلب</button>':'')+
         '</div>'+
       '</div></div>';
   }).join('')+'</div>';
@@ -855,7 +855,7 @@ function rPublicStore(){
 
 /* ===== SUPER ADMIN ===== */
 function rSuperAdmin(){
-  if(!SA)return go('home');
+  if(!SA)return go(`home`);
   var h='<div class="main">';
   h+='<h2 class="sec-t" style="margin-bottom:8px">👑 لوحة السوبر أدمن</h2><p style="color:var(--txtl);margin-bottom:20px">إدارة المنصة بالكامل</p>';
 
@@ -871,11 +871,11 @@ function rSuperAdmin(){
 
   // Tabs
   h+='<div class="tabs">'+
-    '<div class="tab'+(adminTab==='vendors'?' on':'')+'" onclick="adminTab='vendors';render()">🏪 البائعين</div>'+
-    '<div class="tab'+(adminTab==='payments'?' on':'')+'" onclick="adminTab='payments';render()">💰 الدفعات ('+pendingSubs+')</div>'+
-    '<div class="tab'+(adminTab==='products'?' on':'')+'" onclick="adminTab='products';render()">📦 المنتجات</div>'+
-    '<div class="tab'+(adminTab==='auction'?' on':'')+'" onclick="adminTab='auction';render()">📢 المزاد</div>'+
-    '<div class="tab'+(adminTab==='settings'?' on':'')+'" onclick="adminTab='settings';render()">⚙️ الإعدادات</div>'+
+    '<div class="tab'+(adminTab==='vendors'?' on':'')+'" onclick="adminTab=`vendors`;render()">🏪 البائعين</div>'+
+    '<div class="tab'+(adminTab==='payments'?' on':'')+'" onclick="adminTab=`payments`;render()">💰 الدفعات ('+pendingSubs+')</div>'+
+    '<div class="tab'+(adminTab==='products'?' on':'')+'" onclick="adminTab=`products`;render()">📦 المنتجات</div>'+
+    '<div class="tab'+(adminTab==='auction'?' on':'')+'" onclick="adminTab=`auction`;render()">📢 المزاد</div>'+
+    '<div class="tab'+(adminTab==='settings'?' on':'')+'" onclick="adminTab=`settings`;render()">⚙️ الإعدادات</div>'+
   '</div>';
 
   if(adminTab==='vendors') h+=rAdVendors();
@@ -902,8 +902,8 @@ function rAdVendors(){
       '<td><span class="bdg bdg-'+planInfo.cls+'">'+planInfo.icon+' '+planInfo.name+'</span></td>'+
       '<td>'+pc+'/'+planInfo.products+'</td>'+
       '<td><span class="bdg '+stCls+'">'+stTxt+'</span></td>'+
-      '<td>'+(v.active?'<button class="btn btn-d btn-sm" onclick="deactVendor(''+v.id+'')">⛔ إيقاف</button>':'<button class="btn btn-ok btn-sm" onclick="actVendor(''+v.id+'')">✅ تفعيل</button>')+
-      ' <button class="btn btn-s btn-sm" onclick="openStore(''+v.id+'')">👁️</button></td></tr>';
+      '<td>'+(v.active?'<button class="btn btn-d btn-sm" onclick="deactVendor(`${v.id}`)">⛔ إيقاف</button>':'<button class="btn btn-ok btn-sm" onclick="actVendor(`${v.id}`)">✅ تفعيل</button>')+
+      ' <button class="btn btn-s btn-sm" onclick="openStore(`${v.id}`)">👁️</button></td></tr>';
   });
   h+='</tbody></table></div>';
   if(!DB.vendors.length)h+='<div class="empty"><div class="empty-ic">🏪</div><h4>لا يوجد بائعين بعد</h4></div>';
@@ -939,8 +939,8 @@ function rAdPayments(){
         h+='<p style="color:var(--txtm);font-size:13px;margin-bottom:12px">لا يوجد سكرين شوت بعد</p>';
       }
       h+='<div style="display:flex;gap:8px">';
-      h+='<button class="btn btn-ok" onclick="approvePay(''+s.id+'')">✅ موافقة وتفعيل</button>';
-      h+='<button class="btn btn-d" onclick="rejectPay(''+s.id+'')">❌ رفض</button>';
+      h+='<button class="btn btn-ok" onclick="approvePay(`${s.id}`)">✅ موافقة وتفعيل</button>';
+      h+='<button class="btn btn-d" onclick="rejectPay(`${s.id}`)">❌ رفض</button>';
       h+='</div></div>';
     });
   } else {
@@ -977,7 +977,7 @@ function rAdProducts(){
   return '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>المنتج</th><th>البائع</th><th>السعر</th><th>المخزون</th><th>إجراءات</th></tr></thead><tbody>'+
     DB.products.map(function(p){
       var v=DB.vendors.find(function(x){return x.id===p.vid});
-      return '<tr><td>'+p.name+'</td><td>'+(v?v.name:'—')+'</td><td>'+p.price+' ج.م</td><td>'+p.stock+'</td><td><button class="btn btn-d btn-sm" onclick="adminDelProd(''+p.id+'')">🗑️</button></td></tr>';
+      return '<tr><td>'+p.name+'</td><td>'+(v?v.name:'—')+'</td><td>'+p.price+' ج.م</td><td>'+p.stock+'</td><td><button class="btn btn-d btn-sm" onclick="adminDelProd(`${p.id}`)">🗑️</button></td></tr>';
     }).join('')+'</tbody></table></div>';
 }
 function adminDelProd(id){DB.products=DB.products.filter(function(p){return p.id!==id});saveDb();render();toast('🗑️ تم الحذف')}
@@ -1033,10 +1033,10 @@ function rAdAuction(){
       h+='<div style="padding:14px;border:1px solid var(--brd);border-radius:10px;margin-bottom:10px">';
       h+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><strong>#'+(i+1)+' — '+(v?v.name:'—')+'</strong><span class="bdg '+(a.adTitle?'bdg-ok':'bdg-warn')+'">'+(a.adTitle?'✅ إعلان موجود':'⏳ بدون إعلان')+'</span></div>';
       if(!a.adTitle){
-        h+='<button class="btn btn-p btn-sm" onclick="showAdForm(''+a.id+'')">📝 وضع الإعلان</button>';
+        h+='<button class="btn btn-p btn-sm" onclick="showAdForm(`${a.id}`)">📝 وضع الإعلان</button>';
       }else{
         h+='<div style="background:var(--bg);padding:10px;border-radius:6px;font-size:13px"><strong>'+a.adTitle+'</strong><br>'+(a.adText||'')+'</div>';
-        h+='<button class="btn btn-s btn-sm" style="margin-top:6px" onclick="showAdForm(''+a.id+'')">✏️ تعديل</button>';
+        h+='<button class="btn btn-s btn-sm" style="margin-top:6px" onclick="showAdForm(`${a.id}`)">✏️ تعديل</button>';
       }
       h+='</div>';
     });
@@ -1080,7 +1080,7 @@ function showAdForm(aid){
     '<div class="fg"><label>رابط الصورة (اختياري)</label><input id="adImg" value="'+(a.adImg||'')+'" placeholder="https://..."></div>'+
     '</div>';
 
-  sMo('📢 وضع إعلان — شروط الوكالة',formHtml,'saveAd(''+aid+'')');
+  sMo('📢 وضع إعلان — شروط الوكالة',formHtml,'saveAd(`${aid}`)');
 
   // Enable form only when terms are agreed
   setTimeout(function(){
@@ -1166,16 +1166,16 @@ function showLoginPopup(){
   var h='<div style="text-align:center">'+
     '<p style="color:var(--txtl);margin-bottom:24px;font-size:14px">اختر نوع الحساب للدخول</p>'+
     '<div style="display:grid;gap:14px">'+
-      '<div onclick="clMo();cv='auth';authMode='login';render()" style="cursor:pointer;padding:20px;border:2px solid var(--brd);border-radius:var(--r);transition:var(--t);display:flex;align-items:center;gap:14px" onmouseover="this.style.borderColor='var(--p)'" onmouseout="this.style.borderColor='var(--brd)'">'+
+      '<div onclick="clMo();cv=`auth`;authMode=`login`;render()" style="cursor:pointer;padding:20px;border:2px solid var(--brd);border-radius:var(--r);transition:var(--t);display:flex;align-items:center;gap:14px" onmouseover="this.style.borderColor=`var(--p)`" onmouseout="this.style.borderColor=`var(--brd)`">'+
         '<div style="font-size:36px">🏪</div>'+
         '<div style="text-align:right"><strong style="font-size:16px;color:var(--pd)">دخول بائع</strong><br><span style="font-size:12px;color:var(--txtl)">إدارة متجرك ومنتجاتك</span></div>'+
       '</div>'+
-      '<div onclick="clMo();cv='auth';authMode='custLogin';render()" style="cursor:pointer;padding:20px;border:2px solid var(--brd);border-radius:var(--r);transition:var(--t);display:flex;align-items:center;gap:14px" onmouseover="this.style.borderColor='var(--p)'" onmouseout="this.style.borderColor='var(--brd)'">'+
+      '<div onclick="clMo();cv=`auth`;authMode=`custLogin`;render()" style="cursor:pointer;padding:20px;border:2px solid var(--brd);border-radius:var(--r);transition:var(--t);display:flex;align-items:center;gap:14px" onmouseover="this.style.borderColor=`var(--p)`" onmouseout="this.style.borderColor=`var(--brd)`">'+
         '<div style="font-size:36px">👤</div>'+
         '<div style="text-align:right"><strong style="font-size:16px;color:var(--pd)">دخول عميل</strong><br><span style="font-size:12px;color:var(--txtl)">تصفح المتاجر وطلب المنتجات</span></div>'+
       '</div>'+
     '</div>'+
-    '<p style="margin-top:20px;font-size:13px;color:var(--txtl)">ليس لديك حساب؟ <a href="#" onclick="clMo();showReg();return false" style="color:var(--p);font-weight:600">سجل متجرك</a> أو <a href="#" onclick="clMo();cv='auth';authMode='custReg';render();return false" style="color:var(--p);font-weight:600">سجل كعميل</a></p>'+
+    '<p style="margin-top:20px;font-size:13px;color:var(--txtl)">ليس لديك حساب؟ <a href="#" onclick="clMo();showReg();return false" style="color:var(--p);font-weight:600">سجل متجرك</a> أو <a href="#" onclick="clMo();cv=`auth`;authMode=`custReg`;render();return false" style="color:var(--p);font-weight:600">سجل كعميل</a></p>'+
   '</div>';
   sMo('🔑 تسجيل الدخول',h,'clMo()');
   setTimeout(function(){var f=document.querySelector('.md-f');if(f)f.style.display='none'},50);
@@ -1189,20 +1189,20 @@ function rCustomerAuth(){
     h+='<h2>دخول العميل</h2>';
     h+='<p style="color:var(--txtl);margin-bottom:24px">ادخل بريدك وكلمة المرور</p>';
     h+='<div class="fg"><label>البريد الإلكتروني</label><input type="email" id="cE" placeholder="customer@email.com"></div>';
-    h+='<div class="fg"><label>كلمة المرور</label><div class="pw-wrap"><input type="password" id="cP" placeholder="••••••••"><button class="pw-eye" onclick="togPw('cP',this)">👁️</button></div></div>';
+    h+='<div class="fg"><label>كلمة المرور</label><div class="pw-wrap"><input type="password" id="cP" placeholder="••••••••"><button class="pw-eye" onclick="togPw(`cP`,this)">👁️</button></div></div>';
     h+='<button class="btn btn-p btn-lg" style="width:100%;margin-top:10px" onclick="customerLogin()">🔑 تسجيل الدخول</button>';
-    h+='<p style="margin-top:16px;font-size:13px;color:var(--txtl)">ليس لديك حساب؟ <a href="#" onclick="authMode='custReg';render();return false" style="color:var(--p);font-weight:600">سجل الآن</a></p>';
-    h+='<p style="margin-top:8px;font-size:13px;color:var(--txtl)"><a href="#" onclick="authMode='login';render();return false" style="color:var(--p)">دخول بائع بدلاً</a></p>';
+    h+='<p style="margin-top:16px;font-size:13px;color:var(--txtl)">ليس لديك حساب؟ <a href="#" onclick="authMode=`custReg`;render();return false" style="color:var(--p);font-weight:600">سجل الآن</a></p>';
+    h+='<p style="margin-top:8px;font-size:13px;color:var(--txtl)"><a href="#" onclick="authMode=`login`;render();return false" style="color:var(--p)">دخول بائع بدلاً</a></p>';
   } else if(authMode==='custReg'){
     h+='<h2>تسجيل عميل جديد</h2>';
     h+='<p style="color:var(--txtl);margin-bottom:24px">أنشئ حسابك وابدأ التسوق</p>';
     h+='<div class="fg"><label>الاسم</label><input type="text" id="cN" placeholder="اسمك الكامل"></div>';
     h+='<div class="fg"><label>البريد الإلكتروني</label><input type="email" id="cRE" placeholder="customer@email.com"></div>';
     h+='<div class="fg"><label>رقم الموبايل</label><input type="tel" id="cPh" placeholder="01xxxxxxxxx"></div>';
-    h+='<div class="fg"><label>كلمة المرور</label><div class="pw-wrap"><input type="password" id="cRP" placeholder="••••••••"><button class="pw-eye" onclick="togPw('cRP',this)">👁️</button></div></div>';
+    h+='<div class="fg"><label>كلمة المرور</label><div class="pw-wrap"><input type="password" id="cRP" placeholder="••••••••"><button class="pw-eye" onclick="togPw(`cRP`,this)">👁️</button></div></div>';
     h+='<div class="fg"><label>العنوان (اختياري)</label><input type="text" id="cAddr" placeholder="العنوان للتوصيل"></div>';
     h+='<button class="btn btn-ok btn-lg" style="width:100%;margin-top:10px" onclick="customerRegister()">📝 إنشاء الحساب</button>';
-    h+='<p style="margin-top:16px;font-size:13px;color:var(--txtl)">لديك حساب؟ <a href="#" onclick="authMode='custLogin';render();return false" style="color:var(--p);font-weight:600">سجل دخول</a></p>';
+    h+='<p style="margin-top:16px;font-size:13px;color:var(--txtl)">لديك حساب؟ <a href="#" onclick="authMode=`custLogin`;render();return false" style="color:var(--p);font-weight:600">سجل دخول</a></p>';
   }
   h+='</div></div>';
   return h;
@@ -1212,7 +1212,7 @@ function customerLogin(){
   if(!DB.customers)DB.customers=[];
   var c=DB.customers.find(function(x){return x.email===e&&x.pass===p});
   if(!c)return toast('❌ بيانات الدخول غير صحيحة');
-  C=c;saveDb();toast('✅ مرحباً '+c.name);go('customer');
+  C=c;saveDb();toast('✅ مرحباً '+c.name);go(`customer`);
 }
 function customerRegister(){
   var n=document.getElementById('cN').value.trim(),e=document.getElementById('cRE').value.trim(),
@@ -1225,19 +1225,19 @@ function customerRegister(){
   DB.customers.push(c);
   if(!DB.customerOrders)DB.customerOrders=[];
   saveDb();
-  C=c;toast('✅ تم إنشاء حسابك! مرحباً '+n);go('customer');
+  C=c;toast('✅ تم إنشاء حسابك! مرحباً '+n);go(`customer`);
 }
 
 /* ===== CUSTOMER DASHBOARD ===== */
 function rCustomerDash(){
-  if(!C)return go('home');
+  if(!C)return go(`home`);
   var cOrders=(DB.customerOrders||[]).filter(function(o){return o.cid===C.id});
   var h='<div class="main">';
   h+='<div class="store-header"><div class="store-avatar">👤</div><div class="store-info"><h2>'+C.name+'</h2><p>'+(C.address||'عميل في منصة PetMark — سوق الحيوانات الأليفة')+'</p></div></div>';
   h+='<div class="tabs">'+
-    '<div class="tab'+(customerTab==='orders'?' on':'')+'" onclick="customerTab='orders';render()">📦 طلباتي ('+cOrders.length+')</div>'+
-    '<div class="tab'+(customerTab==='browse'?' on':'')+'" onclick="customerTab='browse';render()">🏪 تصفح المتاجر</div>'+
-    '<div class="tab'+(customerTab==='profile'?' on':'')+'" onclick="customerTab='profile';render()">⚙️ حسابي</div>'+
+    '<div class="tab'+(customerTab==='orders'?' on':'')+'" onclick="customerTab=`orders`;render()">📦 طلباتي ('+cOrders.length+')</div>'+
+    '<div class="tab'+(customerTab==='browse'?' on':'')+'" onclick="customerTab=`browse`;render()">🏪 تصفح المتاجر</div>'+
+    '<div class="tab'+(customerTab==='profile'?' on':'')+'" onclick="customerTab=`profile`;render()">⚙️ حسابي</div>'+
   '</div>';
   if(customerTab==='orders') h+=rCustOrders(cOrders);
   else if(customerTab==='browse') h+=rCustBrowse();
@@ -1246,7 +1246,7 @@ function rCustomerDash(){
   return h;
 }
 function rCustOrders(cOrders){
-  if(!cOrders.length)return '<div class="empty"><div class="empty-ic">📦</div><h4>لا توجد طلبات بعد</h4><p>تصفح المتاجر واطلب منتجاتك المفضلة</p><button class="btn btn-p" style="margin-top:12px" onclick="customerTab='browse';render()">🏪 تصفح المتاجر</button></div>';
+  if(!cOrders.length)return '<div class="empty"><div class="empty-ic">📦</div><h4>لا توجد طلبات بعد</h4><p>تصفح المتاجر واطلب منتجاتك المفضلة</p><button class="btn btn-p" style="margin-top:12px" onclick="customerTab=`browse`;render()">🏪 تصفح المتاجر</button></div>';
   return '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>رقم الطلب</th><th>المتجر</th><th>المنتجات</th><th>المبلغ</th><th>الحالة</th><th>التاريخ</th></tr></thead><tbody>'+
     cOrders.map(function(o){
       var sc=o.status==='pending'?'bdg-warn':o.status==='confirmed'?'bdg-info':o.status==='delivered'?'bdg-ok':'bdg-err';
@@ -1260,7 +1260,7 @@ function rCustBrowse(){
   return '<div class="sec-h"><div><h3 class="sec-t">🏪 المتاجر المتاحة</h3><p class="sec-s">تصفح المتاجر واختر منتجاتك</p></div></div>'+
     '<div class="grid">'+active.map(function(v){
       var vp=DB.products.filter(function(p){return p.vid===v.id});
-      return '<div class="card" onclick="openStore(''+(v.slug||v.id)+'')" style="cursor:pointer">'+
+      return '<div class="card" onclick="openStore(`${(v.slug||v.id)}`)" style="cursor:pointer">'+
         '<div style="height:100px;background:linear-gradient(135deg,var(--pd),var(--pl));display:flex;align-items:center;justify-content:center;font-size:40px;color:#fff">'+v.icon+'</div>'+
         '<div class="card-body">'+
           '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">'+
@@ -1280,7 +1280,7 @@ function rCustProfile(){
     '<div class="fg"><label>البريد الإلكتروني</label><input id="cpE" value="'+C.email+'" type="email"></div>'+
     '<div class="fg"><label>رقم الموبايل</label><input id="cpPh" value="'+C.phone+'"></div>'+
     '<div class="fg"><label>العنوان</label><input id="cpAddr" value="'+(C.address||'')+'"></div>'+
-    '<div class="fg"><label>كلمة المرور الجديدة (اتركها فارغة إذا لا تريد التغيير)</label><div class="pw-wrap"><input type="password" id="cpP" placeholder="••••••••"><button class="pw-eye" onclick="togPw('cpP',this)">👁️</button></div></div>'+
+    '<div class="fg"><label>كلمة المرور الجديدة (اتركها فارغة إذا لا تريد التغيير)</label><div class="pw-wrap"><input type="password" id="cpP" placeholder="••••••••"><button class="pw-eye" onclick="togPw(`cpP`,this)">👁️</button></div></div>'+
     '<button class="btn btn-p" onclick="updateCustProfile()">💾 حفظ التغييرات</button>'+
   '</div>';
 }
@@ -1314,7 +1314,7 @@ function showPlaceOrder(productId){
       '<div style="display:flex;justify-content:space-between;font-weight:700;margin-top:6px;border-top:1px solid var(--brd);padding-top:6px"><span>الإجمالي:</span><span id="ordTotal">'+p.price+' ج.م</span></div>'+
     '</div>'+
   '</div>';
-  sMo('🛒 طلب منتج',h,'placeOrder(''+productId+'')');
+  sMo('🛒 طلب منتج',h,'placeOrder(`${productId}`)');
   setTimeout(function(){
     var qty=document.getElementById('ordQty');
     if(qty)qty.addEventListener('input',function(){
@@ -1374,14 +1374,14 @@ function rPrivacy(){
     '<h3 style="color:var(--p);margin:20px 0 10px">9. التحديثات</h3>'+
     '<p>قد نقوم بتحديث هذه السياسة من وقت لآخر. سيتم إخطارك بأي تغييرات جوهرية.</p>'+
     '<h3 style="color:var(--p);margin:20px 0 10px">10. تواصل معنا</h3>'+
-    '<p>لأي استفسار حول الخصوصية: <a href="#" onclick="go('contact');return false" style="color:var(--p)">اتصل بنا</a></p>'+
+    '<p>لأي استفسار حول الخصوصية: <a href="#" onclick="go(`contact`);return false" style="color:var(--p)">اتصل بنا</a></p>'+
     '</div>'+
-    '<button class="btn btn-p btn-lg" style="margin-top:24px" onclick="go('home')">← العودة للرئيسية</button>'+
+    '<button class="btn btn-p btn-lg" style="margin-top:24px" onclick="go(`home`)">← العودة للرئيسية</button>'+
   '</div></div>';
 }
 
 function rTerms(){
-  var crossLinks='<div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--brd);display:flex;flex-direction:column;gap:8px;"><a href="#" onclick="go('privacy');return false" style="color:var(--p);font-weight:700">🔒 سياسة الخصوصية</a><a href="#" onclick="go('refund');return false" style="color:var(--p);font-weight:700">💰 سياسة الاسترجاع</a><a href="#" onclick="go('contact');return false" style="color:var(--p);font-weight:700">📬 اتصل بنا</a><a href="#" onclick="go('about');return false" style="color:var(--p);font-weight:700">ℹ️ من نحن</a></div>';
+  var crossLinks='<div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--brd);display:flex;flex-direction:column;gap:8px;"><a href="#" onclick="go(`privacy`);return false" style="color:var(--p);font-weight:700">🔒 سياسة الخصوصية</a><a href="#" onclick="go(`refund`);return false" style="color:var(--p);font-weight:700">💰 سياسة الاسترجاع</a><a href="#" onclick="go(`contact`);return false" style="color:var(--p);font-weight:700">📬 اتصل بنا</a><a href="#" onclick="go(`about`);return false" style="color:var(--p);font-weight:700">ℹ️ من نحن</a></div>';
   return '<div class="main"><div class="auth-box" style="max-width:800px;text-align:right">' +
     '<h2 style="margin-bottom:20px">📜 شروط الاستخدام</h2>' +
     '<p style="font-size:12px;color:var(--txtl);margin-bottom:20px">آخر تحديث: أبريل 2026</p>' +
@@ -1413,7 +1413,7 @@ function rTerms(){
     '<p>تخضع للقوانين المصرية.</p>' +
     crossLinks +
     '</div>' +
-    '<button class="btn btn-p btn-lg" style="margin-top:24px" onclick="go('home')">← العودة للرئيسية</button>' +
+    '<button class="btn btn-p btn-lg" style="margin-top:24px" onclick="go(`home`)">← العودة للرئيسية</button>' +
   "</div></div>";
 }
 
@@ -1437,7 +1437,7 @@ function rRefund(){
     '<h3 style="color:var(--p);margin:20px 0 10px">5. كيفية طلب الاسترجاع</h3>'+
     '<p>تواصل مع إدارة المنصة عبر واتساب أو فيسبوك مع ذكر رقم الطلب وسبب الاسترجاع.</p>'+
     '</div>'+
-    '<button class="btn btn-p btn-lg" style="margin-top:24px" onclick="go('home')">← العودة للرئيسية</button>'+
+    '<button class="btn btn-p btn-lg" style="margin-top:24px" onclick="go(`home`)">← العودة للرئيسية</button>'+
   '</div></div>';
 }
 function rAbout(){
@@ -1461,12 +1461,12 @@ function rAbout(){
     '<h3 style="color:var(--p);margin:20px 0 10px">📊 بالأرقام</h3>'+
     '<p>✅ +100 متجر مسجل<br>✅ +500 منتج متنوع<br>✅ +1000 عميل راضي<br>✅ توصيل لجميع المحافظات</p>'+
     '<h3 style="color:var(--p);margin:20px 0 10px">🔗 روابط سريعة</h3>'+
-    '<p><a href="#" onclick="go('privacy');return false" style="color:var(--p)">سياسة الخصوصية</a> · <a href="#" onclick="go('refund');return false" style="color:var(--p)">سياسة الاسترجاع</a> · <a href="#" onclick="go('contact');return false" style="color:var(--p)">اتصل بنا</a></p>'+
+    '<p><a href="#" onclick="go(`privacy`);return false" style="color:var(--p)">سياسة الخصوصية</a> · <a href="#" onclick="go(`refund`);return false" style="color:var(--p)">سياسة الاسترجاع</a> · <a href="#" onclick="go(`contact`);return false" style="color:var(--p)">اتصل بنا</a></p>'+
     '<h3 style="color:var(--p);margin:20px 0 10px">📞 تواصل معنا</h3>'+
     '<p>📧 <a href="mailto:emadh5156@gmail.com" style="color:var(--p)">emadh5156@gmail.com</a><br>'+
-    'أو من خلال صفحة <a href="#" onclick="go('contact');return false" style="color:var(--p)">اتصل بنا</a></p>'+
+    'أو من خلال صفحة <a href="#" onclick="go(`contact`);return false" style="color:var(--p)">اتصل بنا</a></p>'+
     '</div>'+
-    '<button class="btn btn-p btn-lg" style="margin-top:24px" onclick="go('home')">← العودة للرئيسية</button>'+
+    '<button class="btn btn-p btn-lg" style="margin-top:24px" onclick="go(`home`)">← العودة للرئيسية</button>'+
   '</div></div>';
 }
 function rContact(){
@@ -1487,9 +1487,9 @@ function rContact(){
     '</div>'+
     '<div style="margin-top:16px">'+
       '<h3 style="color:var(--p);margin-bottom:10px">🔗 روابط سريعة</h3>'+
-      '<p><a href="#" onclick="go('privacy');return false" style="color:var(--p)">سياسة الخصوصية</a> · <a href="#" onclick="go('refund');return false" style="color:var(--p)">سياسة الاسترجاع</a> · <a href="#" onclick="go('about');return false" style="color:var(--p)">من نحن</a></p>'+
+      '<p><a href="#" onclick="go(`privacy`);return false" style="color:var(--p)">سياسة الخصوصية</a> · <a href="#" onclick="go(`refund`);return false" style="color:var(--p)">سياسة الاسترجاع</a> · <a href="#" onclick="go(`about`);return false" style="color:var(--p)">من نحن</a></p>'+
     '</div>'+
-    '<button class="btn btn-p btn-lg" style="margin-top:24px" onclick="go('home')">← العودة للرئيسية</button>'+
+    '<button class="btn btn-p btn-lg" style="margin-top:24px" onclick="go(`home`)">← العودة للرئيسية</button>'+
   '</div></div>';
 }
 
@@ -1548,12 +1548,12 @@ function updateSlugPreview(){var v=document.getElementById('rSlug').value.trim()
 function rFtr(){
   return '<footer class="ftr"><p><strong>PetMark — سوق الحيوانات الأليفة</strong> — منصة بيع وشراء الحيوانات الأليفة ومستلزماتها © 2026</p>'+
   '<div class="ftr-links">'+
-    '<a href="#" onclick="go('home');return false">الرئيسية</a>'+
-    '<a href="#" onclick="go('privacy');return false">سياسة الخصوصية</a>'+
-    '<a href="#" onclick="go('terms');return false">شروط الاستخدام</a>'+
-    '<a href="#" onclick="go('refund');return false">سياسة الاسترجاع</a>'+
-    '<a href="#" onclick="go('about');return false">من نحن</a>'+
-    '<a href="#" onclick="go('contact');return false">اتصل بنا</a>'+
+    '<a href="#" onclick="go(`home`);return false">الرئيسية</a>'+
+    '<a href="#" onclick="go(`privacy`);return false">سياسة الخصوصية</a>'+
+    '<a href="#" onclick="go(`terms`);return false">شروط الاستخدام</a>'+
+    '<a href="#" onclick="go(`refund`);return false">سياسة الاسترجاع</a>'+
+    '<a href="#" onclick="go(`about`);return false">من نحن</a>'+
+    '<a href="#" onclick="go(`contact`);return false">اتصل بنا</a>'+
   '</div>'+
   '<p style="font-size:11px;opacity:.6;margin-top:8px">توصيل لجميع المحافظات • الدفع إنستاباي / فودافون كاش</p></footer>';
 }
@@ -1564,7 +1564,7 @@ function checkHash(){
   if(h.indexOf('#store-')===0){
     var slug=h.substring(7);
     var v=DB.vendors.find(function(x){return x.slug===slug||x.id===slug});
-    if(v){storeViewId=v.id;cv='store';}
+    if(v){storeViewId=v.id;cv=`store`;}
   }
 }
 
