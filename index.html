@@ -219,6 +219,23 @@ var PLANS = {
   unl:     {name:'غير محدود', icon:'🚀', products:99999,price:3000, promo:2400, color:'#dc3545', cls:'unl',     chapters:999}
 };
 
+
+/* ===== DEMO PRODUCTS (shown when no real vendors) ===== */
+var DEMO_PRODUCTS = [
+  {name:'طعام كلاب رويال كانين', desc:'طعام جاف للكلاب البالغة - 3 كجم', price:450, icon:'🐕', color:'#8B4513', chapter:'كلاب'},
+  {name:'رمل قطط天然ي', desc:'رمل قطط طبيعي مكتمل الرائحة - 10 كجم', price:180, icon:'🐱', color:'#6B7280', chapter:'قطط'},
+  {name:'ألعاب مطاطية للكلاب', desc:'مجموعة 3 كرات مطاطية متينة', price:95, icon:'🦴', color:'#DC2626', chapter:'كلاب'},
+  {name:'طعام قطط ويسكاس', desc:'طعام مبلل بالدجاج - 12 عبوة', price:320, icon:'🐟', color:'#2563EB', chapter:'قطط'},
+  {name:'مقعد سيارة للكلاب', desc:'مقعد مريح وآمن للسفر', price:650, icon:'🚗', color:'#059669', chapter:'مستلزمات'},
+  {name:'مشط فراء للقطط', desc:'مشط فولاذ مقاوم للصدأ للعناية بالفراء', price:75, icon:'✨', color:'#7C3AED', chapter:'قطط'},
+  {name:'طوق كلب جلد طبيعي', desc:'طوق جلد فاخر قابل للتعديل', price:150, icon:'🎀', color:'#B45309', chapter:'كلاب'},
+  {name:'بيت قطط معلق', desc:'بيت قطط معلق على النافذة', price:380, icon:'🏠', color:'#0891B2', chapter:'قطط'},
+  {name:'شراب كلاب صغير', desc:'شراب ناعم للكلاب الصغيرة', price:120, icon:'👕', color:'#DB2777', chapter:'كلاب'},
+  {name:'نافورة مياه للحيوانات', desc:'نافورة مياه تلقائية 2 لتر', price:290, icon:'💧', color:'#2563EB', chapter:'مستلزمات'},
+  {name:'قلادة قطط مع GPS', desc:'قلادة ذكية لتتبع القطط', price:520, icon:'📍', color:'#059669', chapter:'قطط'},
+  {name:'عظام طبيعية للكلاب', desc:'عظام مضغ طبيعية - 5 حبات', price:85, icon:'🦴', color:'#92400E', chapter:'كلاب'}
+];
+
 /* ===== DB ===== */
 function loadDb(){
   try{return JSON.parse(localStorage.getItem('attara_platform'))||null}catch(e){return null}
@@ -249,6 +266,7 @@ var V = null; // current vendor
 var SA = null; // super admin logged in
 var C = null; // current customer
 var cv = 'home'; // current view
+var demoChapter = 'all'; // demo products chapter filter
 var vendorTab = 'products';
 var adminTab = 'vendors';
 var customerTab = 'orders';
@@ -264,7 +282,7 @@ function render(){
   var a=document.getElementById('app');
   var h='';
   h+=rHdr();
-  if(cv==='home')        {h+=rHero();h+=rStats();h+=rPricing();h+=rFeatured()}
+  if(cv==='home')        {h+=rHero();h+=rDemoProducts();h+=rStats();h+=rPricing();h+=rFeatured()}
   else if(cv==='auth')   {if(authMode==='custLogin'||authMode==='custReg'){h+=rCustomerAuth()}else{h+=rAuth()}}
   else if(cv==='vendor') {h+=rVendorDash()}
   else if(cv==='store')  {h+=rPublicStore()}
@@ -280,10 +298,45 @@ function render(){
   rSocial();
 }
 
+
+/* ===== DEMO PRODUCTS SECTION ===== */
+function rDemoProducts(){
+  var chapters=[...new Set(DEMO_PRODUCTS.map(function(p){return p.chapter}))];
+  var h='<div class="main"><div class="sec-h"><div><h2 class="sec-t">🐾 منتجاتنا المميزة</h2><p class="sec-s">تصفح مجموعة من أفضل منتجات الحيوانات الأليفة</p></div></div>';
+  // Chapter filter tabs
+  h+='<div class="tabs" style="margin-bottom:20px">';
+  h+='<div class="tab'+(demoChapter===`all`?' on':'')+'" onclick="demoChapter=`all`;render()">الكل ('+DEMO_PRODUCTS.length+')</div>';
+  chapters.forEach(function(ch){
+    var count=DEMO_PRODUCTS.filter(function(p){return p.chapter===ch}).length;
+    h+='<div class="tab'+(demoChapter===ch?' on':'')+'" onclick="demoChapter=`'+ch+'`;render()">'+ch+' ('+count+')</div>';
+  });
+  h+='</div>';
+  // Filter
+  var filtered=demoChapter==='all'?DEMO_PRODUCTS:DEMO_PRODUCTS.filter(function(p){return p.chapter===demoChapter});
+  h+='<div class="prod-grid">'+filtered.map(function(p){
+    return '<div class="prod-card" style="position:relative">'+
+      '<div style="width:100%;height:180px;background:linear-gradient(135deg,'+p.color+','+p.color+'88);display:flex;align-items:center;justify-content:center;font-size:60px;cursor:pointer">'+p.icon+'</div>'+
+      '<div class="price-tag">'+p.price+' ج.م</div>'+
+      '<div class="prod-body">'+
+        '<h3 class="prod-title">'+p.name+'</h3>'+
+        '<p class="prod-desc">'+p.desc+'</p>'+
+        '<div style="display:flex;justify-content:space-between;align-items:center">'+
+          '<span class="stock-badge stock-ok">متوفر</span>'+
+          '<button class="btn btn-p btn-sm" onclick="showReg()">🛒 اطلب الآن</button>'+
+        '</div>'+
+      '</div></div>';
+  }).join('')+'</div>';
+  h+='</div>';
+  return h;
+}
+
 /* ===== HEADER ===== */
 function rHdr(){
   var h='<header class="hdr"><div class="hdr-in">';
   h+='<div class="logo" onclick="go(`home`)"><div class="logo-ic">🏪</div><div><h1>PetMark — سوق الحيوانات الأليفة</h1><span>منصة بيع وشراء الحيوانات الأليفة ومستلزماتها</span></div></div>';
+  h+='<div style="display:flex;align-items:center;gap:16px">';
+  h+='<a href="#" onclick="document.querySelector(\`.main\`).scrollIntoView({behavior:\`smooth\`});return false" style="color:rgba(255,255,255,.9);font-size:14px;font-weight:600;display:flex;align-items:center;gap:4px">💰 التسعير</a>';
+  h+='</div>';
   h+='<div class="hdr-acts">';
   if(SA){
     h+='<span class="bdg bdg-warn">👑 سوبر أدمن</span>';
