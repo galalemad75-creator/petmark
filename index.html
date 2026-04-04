@@ -163,7 +163,7 @@ a{color:inherit;text-decoration:none}
 .social-bar{position:fixed;bottom:80px;left:20px;z-index:50;display:flex;flex-direction:column;gap:10px}
 .social-btn{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;box-shadow:0 4px 15px rgba(0,0,0,.2);transition:var(--t);text-decoration:none;border:none;cursor:pointer}
 .social-btn:hover{transform:scale(1.1)}
-.social-wa{background:#25D366}..social-fb{background:#1877F2;font-weight:900;font-family:sans-serif}
+.social-wa{background:#25D366}.social-fb{background:#1877F2;font-weight:900;font-family:sans-serif}
 
 /* PAY BOX */
 .pay-box{background:var(--bg);border-radius:var(--rs);padding:16px;border:1px solid var(--brd);margin:10px 0}
@@ -269,8 +269,6 @@ function render(){
   else if(cv==='store')  {h+=rPublicStore()}
   else if(cv==='admin')  {h+=rSuperAdmin()}
   else if(cv==='privacy'){h+=rPrivacy()}
-  else if(cv==='terms')  {h+=rTerms()}
-  else if(cv==='terms')  {h+=rTerms()}
   else if(cv==='terms')  {h+=rTerms()}
   else if(cv==='refund') {h+=rRefund()}
   else if(cv==='about')  {h+=rAbout()}
@@ -1419,29 +1417,6 @@ function rTerms(){
   "</div></div>";
 }
 
-function rTerms(){
-  var cl='<div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--brd);display:flex;flex-direction:column;gap:8px;"><a href="#" onclick="go('privacy');return false" style="color:var(--p);font-weight:700">🔒 سياسة الخصوصية</a><a href="#" onclick="go('refund');return false" style="color:var(--p);font-weight:700">💰 سياسة الاسترجاع</a><a href="#" onclick="go('contact');return false" style="color:var(--p);font-weight:700">📬 اتصل بنا</a><a href="#" onclick="go('about');return false" style="color:var(--p);font-weight:700">ℹ️ من نحن</a></div>';
-  return '<div class="main"><div class="auth-box" style="max-width:800px;text-align:right">'+
-    '<h2 style="margin-bottom:20px">📜 شروط الاستخدام</h2>'+
-    '<p style="font-size:12px;color:var(--txtl);margin-bottom:20px">آخر تحديث: أبريل 2026</p>'+
-    '<div style="line-height:2.2;font-size:14px;color:var(--txt)">'+
-    '<p>باستخدام <strong>PetMark</strong> فإنك توافق على الشروط التالية:</p>'+
-    '<h3 style="color:var(--p);margin:20px 0 10px">1. القبول</h3><p>باستخدام المنصة فإنك توافق على هذه الشروط.</p>'+
-    '<h3 style="color:var(--p);margin:20px 0 10px">2. وصف الخدمة</h3><p>PetMark منصة تربط البائعين والمشترين للحيوانات الأليفة ومستلزماتها. نحن وسيط وليس بائع مباشر.</p>'+
-    '<h3 style="color:var(--p);margin:20px 0 10px">3. شروط العمر</h3><p>يجب أن يكون عمرك 18+ للتسجيل.</p>'+
-    '<h3 style="color:var(--p);margin:20px 0 10px">4. التزامات البائعين</h3><p>تقديم معلومات دقيقة. عدم بيع منتجات محظورة. الالتزام بجودة المنتجات.</p>'+
-    '<h3 style="color:var(--p);margin:20px 0 10px">5. المسؤولية</h3><p>المنصة وسيط فقط. غير مسؤولة عن جودة المنتجات أو النزاعات.</p>'+
-    '<h3 style="color:var(--p);margin:20px 0 10px">6. الدفع</h3><p>الدفع مباشرة للبائع. لا عمولات حالياً.</p>'+
-    '<h3 style="color:var(--p);margin:20px 0 10px">7. حذف الحساب</h3><p>يمكن طلب الحذف في أي وقت. يتم خلال 30 يوماً.</p>'+
-    '<h3 style="color:var(--p);margin:20px 0 10px">8. التوافق مع Google Play</h3><ul style="padding-right:20px"><li>يتوافق مع سياسات Google Play</li><li>لا نجمع بيانات زائدة</li><li>لا برامج ضارة</li><li>الموقع بموافقة فقط</li><li>آلية حذف البيانات</li><li>لا بيع بيانات</li><li>إعلانات متوافقة</li><li>إشعارات للخدمة فقط</li><li>تصنيف 18+</li><li>بيانات محمية</li><li>لا سلوك مضلل</li><li>أذونات ضرورية فقط</li><li>رابط الخصوصية</li><li>إلغاء الاشتراك</li><li>معايير الجودة</li></ul>'+
-    '<h3 style="color:var(--p);margin:20px 0 10px">9. التوافق مع Apple App Store</h3><ul style="padding-right:20px"><li>يتوافق مع إرشادات Apple</li><li>لا بيانات زائدة</li><li>خصوصية واضحة</li><li>لا ميزات خفية</li><li>خصوصية المستخدم</li><li>تصنيف 18+</li><li>الإفصاح عن الموقع</li><li>لا APIs خاصة</li><li>إدارة البيانات</li><li>محتوى متوافق</li><li>دعم أحدث iOS</li><li>تقارير الأعطال</li><li>لا تأثير على النظام</li><li>حقوق الملكية</li><li>متطلبات Apple</li></ul>'+
-    '<h3 style="color:var(--p);margin:20px 0 10px">10. التوافق مع Google AdSense</h3><ul style="padding-right:20px"><li>إعلانات متوافقة</li><li>لا ننقر على إعلاناتنا</li><li>وضع مناسب</li><li>إلغاء الإعلانات</li><li>لا تعديل الكود</li><li>محتوى مناسب</li><li>GDPR و CCPA</li><li>فئات حساسة مستبعدة</li><li>كوكيز مذكورة</li><li>لا إعلانات فارغة</li><li>عدد ضمن الحدود</li></ul>'+
-    '<h3 style="color:var(--p);margin:20px 0 10px">11. القانون المعمول به</h3><p>تخضع للقوانين المصرية.</p>'+
-    cl+
-    '</div>'+
-    '<button class="btn btn-p btn-lg" style="margin-top:24px" onclick="go('home')">← العودة للرئيسية</button>'+
-  '</div></div>';
-}
 function rRefund(){
   return '<div class="main"><div class="auth-box" style="max-width:800px;text-align:right">'+
     '<h2 style="margin-bottom:20px">🔄 سياسة الاسترجاع والاستبدال</h2>'+
