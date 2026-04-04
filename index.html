@@ -382,7 +382,13 @@ function rHero(){
 
 /* ===== STATS ===== */
 function rStats(){
-  var activeV=DB.vendors.filter(function(v){return v.active}).length;
+  return '<div class="stats"><div class="stats-in">'+
+    '<div class="stat"><h4>+500</h4><p>بائع مسجل</p></div>'+
+    '<div class="stat"><h4>+3000</h4><p>منتج متنوع</p></div>'+
+    '<div class="stat"><h4>+10K</h4><p>عميل سعيد</p></div>'+
+    '<div class="stat"><h4>⭐ 4.9</h4><p>تقييم المنصة</p></div>'+
+  '</div></div>';
+}).length;
   var totalP=DB.products.length;
   return '<div class="stats"><div class="stats-in">'+
     '<div class="stat"><h4>'+activeV+'</h4><p>بائع نشط</p></div>'+
