@@ -212,10 +212,11 @@ var SOCIAL_LINKS = {whatsapp:'https://wa.me/201012345678', facebook:'https://fac
 
 /* ===== PLANS ===== */
 var PLANS = {
-  free:  {name:'مجاني',  icon:'🆓', products:15, price:0,    promo:0,    color:'#6c757d', cls:'free',  chapters:1},
-  plus:  {name:'بلس',    icon:'⭐', products:50, price:500,  promo:300,  color:'#28a745', cls:'plus',  chapters:1},
-  pro:   {name:'برو',    icon:'💎', products:1120,price:800,  promo:575,  color:'#007bff', cls:'pro',   chapters:3},
-  unl:   {name:'غير محدود',icon:'🚀',products:99999,price:1500,promo:1200,color:'#dc3545', cls:'unl',   chapters:999}
+  free:    {name:'مجاني',    icon:'🆓', products:15,   price:0,    promo:0,    color:'#6c757d', cls:'free',    chapters:1},
+  plus:    {name:'بلس',      icon:'⭐', products:50,   price:500,  promo:300,  color:'#28a745', cls:'plus',    chapters:3},
+  pro:     {name:'برو',      icon:'💎', products:1120, price:800,  promo:575,  color:'#007bff', cls:'pro',     chapters:6},
+  premium: {name:'مميز',     icon:'👑', products:1120, price:1200, promo:900,  color:'#e91e63', cls:'unl',     chapters:15},
+  unl:     {name:'غير محدود', icon:'🚀', products:99999,price:3000, promo:2400, color:'#dc3545', cls:'unl',     chapters:999}
 };
 
 /* ===== DB ===== */
@@ -340,7 +341,7 @@ function rStats(){
 
 /* ===== PRICING ===== */
 function rPricing(){
-  var plans=['free','plus','pro','unl'];
+  var plans=['free','plus','pro','premium','unl'];
   var h='<div class="main"><div class="sec-h"><div><h2 class="sec-t">💎 باقات الاشتراك</h2><p class="sec-s">اختر الباقة المناسبة لمتجرك</p></div></div><div class="pricing">';
   plans.forEach(function(k,i){
     var p=PLANS[k];
@@ -354,13 +355,13 @@ function rPricing(){
         '<div class="plan-price">'+p.promo+' <small>ج.م / شهر</small></div>'
         :'<div class="plan-price">مجاناً</div>')+
       '<ul class="plan-feat">'+
-        '<li>حتى '+p.products+' منتج'+(k==='unl'?' (غير محدود)':'')+'</li>'+
-        '<li>حتى '+p.chapters+' باب'+(k==='unl'?' (غير محدود)':'')+(k==='free'?' (باب واحد)':'')+'</li>'+
+        '<li>حتى '+p.products+' منتج'+(k==='unl'||k==='premium'?' (غير محدود)':'')+'</li>'+
+        '<li>حتى '+p.chapters+' باب'+(k==='unl'||k==='premium'?' (غير محدود)':'')+(k==='free'?' (باب واحد)':'')+'</li>'+
         '<li>صفحة متجر خاصة بيك</li>'+
         '<li>لوحة تحكم كاملة</li>'+
         '<li>إدارة الطلبات</li>'+
         (k!=='free'?'<li>أولوية في نتائج البحث</li>':'')+
-        (k==='pro'||k==='unl'?'<li>إعلانات مميزة</li>':'')+
+        (k==='pro'||k==='premium'||k==='unl'?'<li>إعلانات مميزة</li>':'')+
         (k==='unl'?'<li>دعم فني مخصص</li>':'')+
       '</ul>'+
       '<button class="btn '+(p.price===0?'btn-ok':'btn-p')+' btn-lg" style="width:100%" onclick="startReg(`${k}`)">'+
