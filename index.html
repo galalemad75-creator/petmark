@@ -335,7 +335,7 @@ function rHdr(){
   var h='<header class="hdr"><div class="hdr-in">';
   h+='<div class="logo" onclick="go(`home`)"><div class="logo-ic">🏪</div><div><h1>PetMark — سوق الحيوانات الأليفة</h1><span>منصة بيع وشراء الحيوانات الأليفة ومستلزماتها</span></div></div>';
   h+='<div style="display:flex;align-items:center;gap:16px">';
-  h+='<a href="#" onclick="document.querySelector(\`.main\`).scrollIntoView({behavior:\`smooth\`});return false" style="color:rgba(255,255,255,.9);font-size:14px;font-weight:600;display:flex;align-items:center;gap:4px">💰 التسعير</a>';
+  h+='<a href="#" onclick="go(`home`);setTimeout(function(){var el=document.getElementById(`pricing-section`);if(el)el.scrollIntoView({behavior:`smooth`})},100);return false" style="color:rgba(255,255,255,.9);font-size:14px;font-weight:600;display:flex;align-items:center;gap:4px">💰 التسعير</a>';
   h+='</div>';
   h+='<div class="hdr-acts">';
   if(SA){
@@ -395,7 +395,7 @@ function rStats(){
 /* ===== PRICING ===== */
 function rPricing(){
   var plans=['free','plus','pro','premium','unl'];
-  var h='<div class="main"><div class="sec-h"><div><h2 class="sec-t">💎 باقات الاشتراك</h2><p class="sec-s">اختر الباقة المناسبة لمتجرك</p></div></div><div class="pricing">';
+  var h='<div class="main" id="pricing-section"><div class="sec-h"><div><h2 class="sec-t">💎 باقات الاشتراك</h2><p class="sec-s">اختر الباقة المناسبة لمتجرك</p></div></div><div class="pricing">';
   plans.forEach(function(k,i){
     var p=PLANS[k];
     var isPop=(k==='plus');
@@ -538,7 +538,7 @@ function rAuth(){
   else if(authMode==='admin'){
     h+='<h2>دخول السوبر أدمن</h2>';
     h+='<p style="color:var(--txtl);margin-bottom:24px">لوحة التحكم الشاملة</p>';
-    h+='<div class="fg"><label>البريد الإلكتروني</label><input type="email" id="aE" placeholder="admin@attara.com"></div>';
+    h+='<div class="fg"><label>البريد الإلكتروني</label><input type="email" id="aE" placeholder="أدخل البريد الإلكتروني"></div>';
     h+='<div class="fg"><label>كلمة المرور</label><div class="pw-wrap"><input type="password" id="aP" placeholder="••••••••"><button class="pw-eye" onclick="togPw(`aP`,this)">👁️</button></div></div>';
     h+='<button class="btn btn-a btn-lg" style="width:100%;margin-top:10px" onclick="superAdminLogin()">👑 دخول السوبر أدمن</button>';
     h+='<p style="margin-top:16px;font-size:11px;color:var(--txtm)">🔑 ادخل بيانات السوبر أدمن للدخول</p>';
