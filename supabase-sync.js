@@ -9,7 +9,7 @@
       document.head.appendChild(s);
       await new Promise(r=>s.onload=r);
       supa=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
-      await supa.from('kv_store').select('key').limit(1);
+      await supa.from(typeof SITE_ID!=='undefined'&&SITE_ID?SITE_ID+'_kv_store':'kv_store').select('key').limit(1);
       ok=true;console.log('[Sync] ✅ Connected');
     }catch(e){console.warn('[Sync] Offline:',e.message)}
   }
@@ -20,11 +20,11 @@
     const origSet=localStorage.setItem;
     localStorage.setItem=function(k,v){
       origSet.call(localStorage,k,v);
-      supa.from('kv_store').upsert({key:k,value:JSON.parse(v),updated_at:new Date().toISOString()},{onConflict:'key'}).catch(()=>{});
+      supa.from(typeof SITE_ID!=='undefined'&&SITE_ID?SITE_ID+'_kv_store':'kv_store').upsert({key:k,value:JSON.parse(v),updated_at:new Date().toISOString()},{onConflict:'key'}).catch(()=>{});
     };
     // Initial sync from cloud
     try{
-      const{data}=await supa.from('kv_store').select('key,value').like('key',PREFIX+'%');
+      const{data}=await supa.from(typeof SITE_ID!=='undefined'&&SITE_ID?SITE_ID+'_kv_store':'kv_store').select('key,value').like('key',PREFIX+'%');
       if(data)for(const r of data)_setItem(r.key,JSON.stringify(r.value));
     }catch{}
   }
